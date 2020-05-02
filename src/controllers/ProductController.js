@@ -9,9 +9,29 @@ module.exports = {
     return res.json(products)
   },
 
+  async show(req,res) {
+    const product = await Product.findById(req.params.id)
+
+    return res.json(product)
+  }, 
+
   async store(req, res){
     const product = await Product.create(req.body)
 
     return res.json(product)
+  },
+
+  // se não usar o new, ele vai retornar o product antes da alteração
+  async update(req,res) {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { 
+      new: true })
+
+    return res.json(product)
+  },
+
+  async destroy(req, res) {
+    await Product.findByIdAndRemove(req.params.id)
+
+    return res.send()
   }
 }
